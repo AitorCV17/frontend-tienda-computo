@@ -18,7 +18,7 @@
   @apply bg-curious-blue-50;
 }
 
-/* Ajustes para dark mode */
+/* Ajustes globales para dark mode */
 .dark {
   @apply bg-gray-900 text-gray-100;
 }
@@ -28,42 +28,11 @@
 .dark .bg-curious-blue-50 {
   background-color: #0f172a !important;
 }
-.dark h1,
-.dark h2,
-.dark h3,
-.dark h4,
-.dark h5,
-.dark h6,
-.dark p,
-.dark span,
-.dark a {
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6, .dark p, .dark span, .dark a {
   color: #e2e8f0 !important;
 }
 
-/* Animaciones */
-.animate-fade-in-down {
-  animation: fadeInDown 0.4s ease-in-out;
-}
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.product-card {
-  @apply border rounded p-4 shadow hover:shadow-2xl transition transform hover:scale-105 bg-white dark:bg-gray-800;
-}
-
-.animate-spin-slow {
-  animation: spin 1s linear infinite;
-}
-@keyframes spin {
-  100% {
-    transform: rotate(360deg);
-  }
+/* Hero principal */
+section.bg-gradient-to-r.from-blue-600.to-blue-800 {
+  background: linear-gradient(to right, #1e3a8a, #1d4ed8) !important;
 }

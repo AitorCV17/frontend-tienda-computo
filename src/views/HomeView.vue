@@ -1,64 +1,81 @@
 <template>
-  <div class="animate-fade-in-down">
-    <div class="relative bg-cover bg-center" :style="heroStyle">
-      <div class="bg-gradient-to-r from-curious-blue-900 via-curious-blue-600 to-curious-blue-500 bg-opacity-80 py-20">
-        <div class="max-w-4xl mx-auto text-center text-white">
-          <h2 class="hero-title mb-4">Bienvenido a la Tienda de Computación</h2>
-          <p class="hero-subtitle mb-8">Encuentra las mejores ofertas en PCs, Laptops, Periféricos y más</p>
+  <div>
+    <!-- Hero principal -->
+    <section class="relative bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
+      <div class="max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center">
+        <div class="md:w-1/2">
+          <h1 class="text-5xl font-bold mb-4">¡Bienvenido a la Tienda de Computación!</h1>
+          <p class="text-lg mb-6">
+            Descubre las mejores ofertas en PCs, Laptops, Periféricos y más.  
+            La tecnología de vanguardia al alcance de tu mano.
+          </p>
           <div class="space-x-4">
-            <router-link to="/products" class="btn-primary hover:scale-105 transform">
+            <router-link to="/products" class="btn-primary inline-block">
               Ver Productos
             </router-link>
-            <router-link to="/login" class="btn-secondary hover:scale-105 transform">
+            <router-link to="/login" class="btn-secondary inline-block">
               Iniciar Sesión
             </router-link>
           </div>
         </div>
-      </div>
-    </div>
-
-    <!-- Productos más vendidos -->
-    <section class="max-w-7xl mx-auto py-12 px-4">
-      <h3 class="text-3xl font-bold mb-6">Productos Más Vendidos</h3>
-      <div v-if="loadingMostSold" class="text-center">
-        <LoadingSpinner />
-      </div>
-      <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        <div v-for="product in mostSoldProducts" :key="product.id" class="product-card">
-          <LazyImage :src="product.imagen || fallbackImg" :alt="product.nombre" class="mb-4 rounded" />
-          <router-link :to="{ name: 'ProductDetail', params: { id: product.id } }" class="text-xl font-semibold mb-2 block hover:underline">
-            {{ product.nombre }}
-          </router-link>
-          <p class="text-gray-600 dark:text-gray-300 mb-2">
-            {{ product.descripcion || 'Sin descripción' }}
-          </p>
-          <p class="font-bold mb-4">S/ {{ product.precio }}</p>
-          <button class="btn-primary w-full" @click="addToCart(product)">
-            Agregar al Carrito
-          </button>
+        <div class="md:w-1/2 mt-6 md:mt-0 flex justify-center">
+          <img
+            src="https://via.placeholder.com/450x300?text=PC+GAMING"
+            alt="PC"
+            class="rounded shadow-2xl"
+          />
         </div>
       </div>
     </section>
 
-    <!-- Productos recientes -->
-    <section class="max-w-7xl mx-auto py-12 px-4 bg-gray-100 dark:bg-gray-800">
-      <h3 class="text-3xl font-bold mb-6">Productos Recientes</h3>
-      <div v-if="loadingRecent" class="text-center">
-        <LoadingSpinner />
+    <!-- Sección Productos Más Vendidos -->
+    <section class="py-12 bg-gray-100 dark:bg-gray-800">
+      <div class="max-w-7xl mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-6">Productos Más Vendidos</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div
+            v-for="product in bestSellers"
+            :key="product.id"
+            class="border rounded p-4 bg-white dark:bg-gray-700 shadow hover:shadow-lg transition"
+          >
+            <img
+              :src="product.imagen || fallbackImg"
+              alt="Más Vendido"
+              class="w-full h-48 object-cover mb-4"
+            />
+            <h3 class="text-xl font-semibold mb-2">{{ product.nombre }}</h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-2">{{ product.descripcion }}</p>
+            <p class="font-bold mb-4">S/ {{ product.precio }}</p>
+            <router-link :to="{ name: 'ProductDetail', params: { id: product.id } }" class="btn-primary w-full block text-center">
+              Ver Detalle
+            </router-link>
+          </div>
+        </div>
       </div>
-      <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        <div v-for="product in recentProducts" :key="product.id" class="product-card">
-          <LazyImage :src="product.imagen || fallbackImg" :alt="product.nombre" class="mb-4 rounded" />
-          <router-link :to="{ name: 'ProductDetail', params: { id: product.id } }" class="text-xl font-semibold mb-2 block hover:underline">
-            {{ product.nombre }}
-          </router-link>
-          <p class="text-gray-600 dark:text-gray-300 mb-2">
-            {{ product.descripcion || 'Sin descripción' }}
-          </p>
-          <p class="font-bold mb-4">S/ {{ product.precio }}</p>
-          <button class="btn-primary w-full" @click="addToCart(product)">
-            Agregar al Carrito
-          </button>
+    </section>
+
+    <!-- Sección Productos Recientes -->
+    <section class="py-12">
+      <div class="max-w-7xl mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-6">Productos Recientes</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div
+            v-for="product in recentProducts"
+            :key="product.id"
+            class="border rounded p-4 bg-white dark:bg-gray-700 shadow hover:shadow-lg transition"
+          >
+            <img
+              :src="product.imagen || fallbackImg"
+              alt="Reciente"
+              class="w-full h-48 object-cover mb-4"
+            />
+            <h3 class="text-xl font-semibold mb-2">{{ product.nombre }}</h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-2">{{ product.descripcion }}</p>
+            <p class="font-bold mb-4">S/ {{ product.precio }}</p>
+            <router-link :to="{ name: 'ProductDetail', params: { id: product.id } }" class="btn-primary w-full block text-center">
+              Ver Detalle
+            </router-link>
+          </div>
         </div>
       </div>
     </section>
@@ -66,77 +83,44 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import LazyImage from '../components/LazyImage.vue'
-import LoadingSpinner from '../components/LoadingSpinner.vue'
-import { useCartStore } from '../store/cart'
+import { defineComponent, ref, onMounted } from 'vue'
 import axios from 'axios'
-
-interface ProductoHome {
-  id: number
-  nombre: string
-  descripcion?: string
-  precio: number
-  imagen?: string
-}
 
 export default defineComponent({
   name: 'HomeView',
-  components: { LazyImage, LoadingSpinner },
   setup() {
+    const bestSellers = ref<any[]>([])
+    const recentProducts = ref<any[]>([])
     const fallbackImg = 'https://via.placeholder.com/300'
-    const heroStyle = ref({
-      backgroundImage: "url('../assets/hero.jpg')"
+
+    onMounted(async () => {
+      // Ajusta a tus endpoints reales
+      try {
+        const res1 = await axios.get(import.meta.env.VITE_BACKEND_URL + '/products/best-sellers')
+        bestSellers.value = res1.data
+      } catch {
+        bestSellers.value = []
+      }
+      try {
+        const res2 = await axios.get(import.meta.env.VITE_BACKEND_URL + '/products/recent')
+        recentProducts.value = res2.data
+      } catch {
+        recentProducts.value = []
+      }
     })
 
-    const mostSoldProducts = ref<ProductoHome[]>([])
-    const recentProducts = ref<ProductoHome[]>([])
-    const loadingMostSold = ref(true)
-    const loadingRecent = ref(true)
-    const cartStore = useCartStore()
-
-    const fetchMostSold = async () => {
-      try {
-        const { data } = await axios.get<ProductoHome[]>(
-          import.meta.env.VITE_BACKEND_URL + '/productos/destacados/mas-vendidos'
-        )
-        mostSoldProducts.value = data
-      } catch (error) {
-        console.error(error)
-      } finally {
-        loadingMostSold.value = false
-      }
-    }
-
-    const fetchRecent = async () => {
-      try {
-        const { data } = await axios.get<ProductoHome[]>(
-          import.meta.env.VITE_BACKEND_URL + '/productos/destacados/recientes'
-        )
-        recentProducts.value = data
-      } catch (error) {
-        console.error(error)
-      } finally {
-        loadingRecent.value = false
-      }
-    }
-
-    const addToCart = (product: ProductoHome) => {
-      cartStore.addItemBackend(product.id, 1)
-    }
-
-    fetchMostSold()
-    fetchRecent()
-
     return {
-      fallbackImg,
-      heroStyle,
-      mostSoldProducts,
+      bestSellers,
       recentProducts,
-      loadingMostSold,
-      loadingRecent,
-      addToCart
+      fallbackImg
     }
   }
 })
 </script>
+
+<style scoped>
+/* Ajustes extra para hero */
+section.relative.bg-gradient-to-r {
+  background: linear-gradient(to right, #004aad, #0066d6);
+}
+</style>
