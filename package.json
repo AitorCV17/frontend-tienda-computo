@@ -1,27 +1,24 @@
 {
   "name": "frontend-tienda-virtual",
   "version": "1.0.0",
-  "description": "Frontend para tienda de computación con Vue 3, Vite, TailwindCSS 3, Google OAuth real",
-  "private": true,
+  "description": "Frontend para Tienda Computación",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^6.4.0",
-    "@vueuse/core": "^10.1.2",
     "axios": "^1.8.1",
     "pinia": "^2.0.35",
     "vue": "^3.3.4",
-    "vue-router": "^4.2.0"
+    "vue-router": "^4.5.0",
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "@vueuse/core": "^10.1.2"
   },
   "devDependencies": {
-    "@types/node": "^18.16.1",
-    "@vitejs/plugin-vue": "^4.3.9",
-    "@vue/tsconfig": "^0.7.0",
+    "@types/node": "^18.19.79",
+    "@vitejs/plugin-vue": "^4.6.2",
     "autoprefixer": "^10.4.14",
-    "connect-history-api-fallback": "^2.0.0",
     "postcss": "^8.4.23",
     "tailwindcss": "^3.3.2",
     "typescript": "^5.8.2",

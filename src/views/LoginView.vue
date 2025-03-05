@@ -5,33 +5,33 @@
     </h2>
     <form @submit.prevent="handleLogin" class="space-y-4">
       <div>
-        <label for="username" class="block text-gray-700 dark:text-gray-200 mb-1">
+        <label for="nombreUsuario" class="block text-gray-700 dark:text-gray-200 mb-1">
           Usuario
         </label>
         <input
-          id="username"
-          v-model="username"
+          id="nombreUsuario"
+          v-model="nombreUsuario"
           type="text"
           placeholder="Ingresa tu usuario"
           class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-curious-blue-500 dark:bg-gray-700 dark:text-gray-200"
         />
-        <p v-if="usernameError" class="text-red-500 text-sm mt-1">
-          {{ usernameError }}
+        <p v-if="nombreUsuarioError" class="text-red-500 text-sm mt-1">
+          {{ nombreUsuarioError }}
         </p>
       </div>
       <div>
-        <label for="password" class="block text-gray-700 dark:text-gray-200 mb-1">
+        <label for="contrasena" class="block text-gray-700 dark:text-gray-200 mb-1">
           Contraseña
         </label>
         <input
-          id="password"
-          v-model="password"
+          id="contrasena"
+          v-model="contrasena"
           type="password"
           placeholder="Ingresa tu contraseña"
           class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-curious-blue-500 dark:bg-gray-700 dark:text-gray-200"
         />
-        <p v-if="passwordError" class="text-red-500 text-sm mt-1">
-          {{ passwordError }}
+        <p v-if="contrasenaError" class="text-red-500 text-sm mt-1">
+          {{ contrasenaError }}
         </p>
       </div>
       <button type="submit" :disabled="!isFormValid" class="w-full btn-primary hover:scale-105 transform">
@@ -39,10 +39,7 @@
       </button>
     </form>
     <div class="mt-4 text-center">
-      <button
-        class="w-full btn-secondary hover:scale-105 transform mb-2"
-        @click="loginWithGoogle"
-      >
+      <button class="w-full btn-secondary hover:scale-105 transform mb-2" @click="loginWithGoogle">
         <i class="fa-brands fa-google mr-2"></i>
         Iniciar con Google
       </button>
@@ -65,64 +62,59 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue'
-import axios from 'axios'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/store/auth'
-import PopupNotification from '@/components/PopupNotification.vue'
+import { useAuthStore } from '../store/auth'
+import PopupNotification from '../components/PopupNotification.vue'
 
 export default defineComponent({
   name: 'LoginView',
   components: { PopupNotification },
   setup() {
-    const username = ref('');
-    const password = ref('');
-    const router = useRouter();
-    const authStore = useAuthStore();
+    const nombreUsuario = ref('')
+    const contrasena = ref('')
+    const router = useRouter()
+    const authStore = useAuthStore()
 
-    const usernameError = computed(() =>
-      username.value.trim() === '' ? 'El usuario es requerido.' : ''
-    );
-    const passwordError = computed(() =>
-      password.value.trim() === '' ? 'La contraseña es requerida.' : ''
-    );
-    const isFormValid = computed(() => username.value.trim() !== '' && password.value.trim() !== '');
+    const nombreUsuarioError = computed(() =>
+      nombreUsuario.value.trim() === '' ? 'El usuario es requerido.' : ''
+    )
+    const contrasenaError = computed(() =>
+      contrasena.value.trim() === '' ? 'La contraseña es requerida.' : ''
+    )
+    const isFormValid = computed(() => nombreUsuario.value.trim() !== '' && contrasena.value.trim() !== '')
 
-    const notificationMessage = ref('');
-    const notificationType = ref('');
-    const notificationIcon = ref('');
+    const notificationMessage = ref('')
+    const notificationType = ref('')
+    const notificationIcon = ref('')
 
     const handleLogin = async () => {
-      if (!isFormValid.value) return;
+      if (!isFormValid.value) return
       try {
-        const response = await axios.post('http://localhost:8000/api/auth/login', {
-          username: username.value,
-          password: password.value
-        });
-        authStore.setToken(response.data.token);
-        router.push('/');
+        await authStore.login(nombreUsuario.value, contrasena.value)
+        router.push('/')
       } catch (error: any) {
-        notificationMessage.value = error.response?.data?.message || 'Error al iniciar sesión';
-        notificationType.value = 'error';
-        notificationIcon.value = 'fa-solid fa-xmark';
+        notificationMessage.value = error.response?.data?.message || 'Error al iniciar sesión'
+        notificationType.value = 'error'
+        notificationIcon.value = 'fa-solid fa-xmark'
       }
-    };
+    }
 
     const loginWithGoogle = () => {
-      window.location.href = 'http://localhost:8000/api/auth/google';
-    };
+      window.location.href = import.meta.env.VITE_BACKEND_URL + '/auth/google'
+    }
 
     return {
-      username,
-      password,
-      usernameError,
-      passwordError,
+      nombreUsuario,
+      contrasena,
+      nombreUsuarioError,
+      contrasenaError,
       isFormValid,
       handleLogin,
       notificationMessage,
       notificationType,
       notificationIcon,
       loginWithGoogle
-    };
+    }
   }
-});
+})
 </script>

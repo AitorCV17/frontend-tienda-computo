@@ -1,10 +1,6 @@
-<!-- src/components/PopupNotification.vue -->
 <template>
   <transition name="fade">
-    <div
-      v-if="visible"
-      class="fixed bottom-4 right-4 z-50 bg-curious-blue-600 text-white px-4 py-2 rounded shadow-lg flex items-center space-x-2 dark:bg-gray-800"
-    >
+    <div v-if="visible" class="fixed bottom-4 right-4 z-50 bg-curious-blue-600 text-white px-4 py-2 rounded shadow-lg flex items-center space-x-2 dark:bg-gray-800">
       <i v-if="icon" :class="icon" class="text-xl"></i>
       <span>{{ message }}</span>
       <button @click="close" class="ml-4 hover:text-gray-300">

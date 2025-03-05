@@ -1,21 +1,11 @@
-<!-- src/components/NavBar.vue -->
 <template>
-  <nav
-    ref="navBarRef"
-    class="bg-gradient-to-r from-curious-blue-500 via-curious-blue-600 to-curious-blue-700 text-white shadow p-4 dark:bg-gray-800 transition-colors duration-300"
-  >
+  <nav ref="navBarRef" class="bg-gradient-to-r from-curious-blue-500 via-curious-blue-600 to-curious-blue-700 text-white shadow p-4 dark:bg-gray-800 transition-colors duration-300">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
-      <!-- Logo y Marca -->
       <div class="flex items-center space-x-2">
-        <img
-          src="@/assets/hero.jpg"
-          alt="Logo"
-          class="h-10 w-10 rounded-full object-cover"
-        />
+        <img src="../assets/hero.jpg" alt="Logo" class="h-10 w-10 rounded-full object-cover" />
         <span class="text-xl font-bold">Tienda Computación</span>
       </div>
 
-      <!-- Menú Principal -->
       <div class="hidden md:flex space-x-6">
         <router-link to="/" class="hover:underline flex items-center">
           <i class="fa-solid fa-house mr-1"></i>
@@ -31,7 +21,6 @@
         </router-link>
       </div>
 
-      <!-- Usuario / Sesión -->
       <div class="hidden md:flex items-center space-x-4 relative">
         <template v-if="!authStore.isLoggedIn">
           <router-link to="/login" class="hover:underline flex items-center">
@@ -40,19 +29,12 @@
           </router-link>
         </template>
         <template v-else>
-          <!-- Botón del icono de usuario -->
-          <button
-            @click.stop="toggleDropdown"
-            class="focus:outline-none relative"
-          >
+          <button @click.stop="toggleDropdown" class="focus:outline-none relative">
             <i class="fa-solid fa-user-circle text-3xl"></i>
           </button>
-          <!-- Dropdown -->
           <div
             v-if="dropdownOpen"
-            class="absolute w-44 shadow-lg rounded z-50
-                   bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-100
-                   border border-gray-200 dark:border-gray-600"
+            class="absolute w-44 shadow-lg rounded z-50 bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-100 border border-gray-200 dark:border-gray-600"
             style="top: 2.6rem; left: -1rem;"
           >
             <router-link
@@ -73,7 +55,6 @@
         </template>
       </div>
 
-      <!-- Botón Modo Oscuro/Claro -->
       <DarkModeSwitch />
     </div>
   </nav>
@@ -82,44 +63,41 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, onBeforeUnmount } from 'vue'
 import DarkModeSwitch from './DarkModeSwitch.vue'
-import { useAuthStore } from '@/store/auth'
+import { useAuthStore } from '../store/auth'
 import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'NavBar',
   components: { DarkModeSwitch },
   setup() {
-    const authStore = useAuthStore();
-    const router = useRouter();
-    const dropdownOpen = ref(false);
-
-    // Referencia al contenedor nav para detectar clicks fuera
-    const navBarRef = ref<HTMLElement | null>(null);
+    const authStore = useAuthStore()
+    const router = useRouter()
+    const dropdownOpen = ref(false)
+    const navBarRef = ref<HTMLElement | null>(null)
 
     const toggleDropdown = () => {
-      dropdownOpen.value = !dropdownOpen.value;
-    };
+      dropdownOpen.value = !dropdownOpen.value
+    }
 
     const logout = () => {
-      authStore.logout();
-      dropdownOpen.value = false;
-      router.push('/');
-    };
+      authStore.logout()
+      dropdownOpen.value = false
+      router.push('/')
+    }
 
-    // Cerrar dropdown si se hace click fuera
     const handleClickOutside = (e: MouseEvent) => {
-      if (!dropdownOpen.value) return;
+      if (!dropdownOpen.value) return
       if (navBarRef.value && !navBarRef.value.contains(e.target as Node)) {
-        dropdownOpen.value = false;
+        dropdownOpen.value = false
       }
-    };
+    }
 
     onMounted(() => {
-      document.addEventListener('click', handleClickOutside);
-    });
+      document.addEventListener('click', handleClickOutside)
+    })
     onBeforeUnmount(() => {
-      document.removeEventListener('click', handleClickOutside);
-    });
+      document.removeEventListener('click', handleClickOutside)
+    })
 
     return {
       authStore,
@@ -127,7 +105,7 @@ export default defineComponent({
       toggleDropdown,
       logout,
       navBarRef
-    };
+    }
   }
-});
+})
 </script>

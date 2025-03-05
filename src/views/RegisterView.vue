@@ -1,4 +1,3 @@
-<!-- src/views/RegisterView.vue -->
 <template>
   <div class="max-w-md mx-auto mt-12 p-6 bg-white dark:bg-gray-800 shadow-xl rounded animate-fade-in-down">
     <h2 class="text-4xl font-bold mb-6 text-center text-gray-800 dark:text-gray-100">
@@ -6,79 +5,72 @@
     </h2>
     <form @submit.prevent="handleRegister" class="space-y-4">
       <div>
-        <label for="username" class="block text-gray-700 dark:text-gray-200 mb-1">
+        <label for="nombreUsuario" class="block text-gray-700 dark:text-gray-200 mb-1">
           Usuario
         </label>
         <input
-          id="username"
-          v-model="username"
+          id="nombreUsuario"
+          v-model="nombreUsuario"
           type="text"
           placeholder="Ingresa tu usuario"
           class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-curious-blue-500 dark:bg-gray-700 dark:text-gray-200"
         />
-        <p v-if="usernameError" class="text-red-500 text-sm mt-1">
-          {{ usernameError }}
+        <p v-if="nombreUsuarioError" class="text-red-500 text-sm mt-1">
+          {{ nombreUsuarioError }}
         </p>
       </div>
       <div>
-        <label for="email" class="block text-gray-700 dark:text-gray-200 mb-1">
+        <label for="correo" class="block text-gray-700 dark:text-gray-200 mb-1">
           Correo Electrónico
         </label>
         <input
-          id="email"
-          v-model="email"
+          id="correo"
+          v-model="correo"
           type="email"
           placeholder="Ingresa tu email"
           class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-curious-blue-500 dark:bg-gray-700 dark:text-gray-200"
         />
-        <p v-if="emailError" class="text-red-500 text-sm mt-1">
-          {{ emailError }}
+        <p v-if="correoError" class="text-red-500 text-sm mt-1">
+          {{ correoError }}
         </p>
       </div>
       <div>
-        <label for="password" class="block text-gray-700 dark:text-gray-200 mb-1">
+        <label for="contrasena" class="block text-gray-700 dark:text-gray-200 mb-1">
           Contraseña
         </label>
         <input
-          id="password"
-          v-model="password"
+          id="contrasena"
+          v-model="contrasena"
           type="password"
           placeholder="Ingresa tu contraseña"
           class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-curious-blue-500 dark:bg-gray-700 dark:text-gray-200"
         />
-        <p v-if="passwordError" class="text-red-500 text-sm mt-1">
-          {{ passwordError }}
+        <p v-if="contrasenaError" class="text-red-500 text-sm mt-1">
+          {{ contrasenaError }}
         </p>
       </div>
       <div>
-        <label for="confirmPassword" class="block text-gray-700 dark:text-gray-200 mb-1">
+        <label for="confirmContrasena" class="block text-gray-700 dark:text-gray-200 mb-1">
           Confirmar Contraseña
         </label>
         <input
-          id="confirmPassword"
-          v-model="confirmPassword"
+          id="confirmContrasena"
+          v-model="confirmContrasena"
           type="password"
           placeholder="Confirma tu contraseña"
           class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-curious-blue-500 dark:bg-gray-700 dark:text-gray-200"
         />
-        <p v-if="confirmPasswordError" class="text-red-500 text-sm mt-1">
-          {{ confirmPasswordError }}
+        <p v-if="confirmContrasenaError" class="text-red-500 text-sm mt-1">
+          {{ confirmContrasenaError }}
         </p>
       </div>
-      <button
-        type="submit"
-        :disabled="!isFormValid"
-        class="w-full btn-primary hover:scale-105 transform"
-      >
+      <button type="submit" :disabled="!isFormValid" class="w-full btn-primary hover:scale-105 transform">
         Crear Cuenta
       </button>
     </form>
     <p class="mt-4 text-center text-gray-700 dark:text-gray-300">
       ¿Ya tienes cuenta?
-      <router-link
-        to="/login"
-        class="text-curious-blue-600 dark:text-curious-blue-400 hover:underline"
-      >
+      <router-link to="/login" class="text-curious-blue-600 dark:text-curious-blue-400 hover:underline">
         Inicia Sesión
       </router-link>
     </p>
@@ -96,41 +88,40 @@
 import { defineComponent, ref, computed } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
-import PopupNotification from '@/components/PopupNotification.vue'
+import PopupNotification from '../components/PopupNotification.vue'
 
 export default defineComponent({
   name: 'RegisterView',
   components: { PopupNotification },
   setup() {
-    const username = ref('')
-    const email = ref('')
-    const password = ref('')
-    const confirmPassword = ref('')
+    const nombreUsuario = ref('')
+    const correo = ref('')
+    const contrasena = ref('')
+    const confirmContrasena = ref('')
     const router = useRouter()
 
-    const usernameError = computed(() =>
-      username.value.trim() === '' ? 'El usuario es requerido.' : ''
+    const nombreUsuarioError = computed(() =>
+      nombreUsuario.value.trim() === '' ? 'El usuario es requerido.' : ''
     )
-    const emailError = computed(() => {
-      if (email.value.trim() === '') return 'El correo es requerido.'
-      const regex = /\S+@\S+\.\S+/
-      return regex.test(email.value) ? '' : 'Correo inválido.'
-    })
-    const passwordError = computed(() => {
-      if (password.value.trim() === '') return 'La contraseña es requerida.'
-      if (password.value.length < 6) return 'Debe tener al menos 6 caracteres.'
-      return ''
-    })
-    const confirmPasswordError = computed(() => {
-      if (confirmPassword.value.trim() === '') return 'Confirma tu contraseña.'
-      return confirmPassword.value !== password.value ? 'Las contraseñas no coinciden.' : ''
-    })
+    const correoError = computed(() =>
+      correo.value.trim() === '' ? 'El correo es requerido.' : ''
+    )
+    const contrasenaError = computed(() =>
+      contrasena.value.trim() === '' ? 'La contraseña es requerida.' : ''
+    )
+    const confirmContrasenaError = computed(() =>
+      confirmContrasena.value.trim() === ''
+        ? 'Debes confirmar la contraseña.'
+        : confirmContrasena.value !== contrasena.value
+        ? 'Las contraseñas no coinciden.'
+        : ''
+    )
     const isFormValid = computed(() =>
-      username.value &&
-      email.value &&
-      password.value &&
-      confirmPassword.value &&
-      password.value === confirmPassword.value
+      nombreUsuario.value.trim() !== '' &&
+      correo.value.trim() !== '' &&
+      contrasena.value.trim() !== '' &&
+      confirmContrasena.value.trim() !== '' &&
+      confirmContrasena.value === contrasena.value
     )
 
     const notificationMessage = ref('')
@@ -140,32 +131,28 @@ export default defineComponent({
     const handleRegister = async () => {
       if (!isFormValid.value) return
       try {
-        await axios.post('http://localhost:8000/api/auth/register', {
-          username: username.value,
-          email: email.value,
-          password: password.value
-        })
-        notificationMessage.value = 'Registro exitoso'
-        notificationType.value = 'success'
-        notificationIcon.value = 'fa-solid fa-check'
+        await axios.post(
+          import.meta.env.VITE_BACKEND_URL + '/auth/register',
+          { nombreUsuario: nombreUsuario.value, correo: correo.value, contrasena: contrasena.value }
+        )
+        alert('Registro exitoso. Por favor, inicia sesión.')
         router.push('/login')
       } catch (error: any) {
-        notificationMessage.value =
-          error.response?.data?.message || 'Error en el registro'
+        notificationMessage.value = error.response?.data?.message || 'Error al registrarse'
         notificationType.value = 'error'
         notificationIcon.value = 'fa-solid fa-xmark'
       }
     }
 
     return {
-      username,
-      email,
-      password,
-      confirmPassword,
-      usernameError,
-      emailError,
-      passwordError,
-      confirmPasswordError,
+      nombreUsuario,
+      correo,
+      contrasena,
+      confirmContrasena,
+      nombreUsuarioError,
+      correoError,
+      contrasenaError,
+      confirmContrasenaError,
       isFormValid,
       handleRegister,
       notificationMessage,

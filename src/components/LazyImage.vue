@@ -1,17 +1,9 @@
-<!-- src/components/LazyImage.vue -->
 <template>
   <div class="relative overflow-hidden">
     <div v-if="!loaded" class="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-700">
       <LoadingSpinner />
     </div>
-    <img
-      v-if="loaded"
-      :src="src"
-      :alt="alt"
-      class="transition-opacity duration-700 opacity-0"
-      @load="onLoad"
-      ref="imgRef"
-    />
+    <img v-if="loaded" :src="src" :alt="alt" class="transition-opacity duration-700 opacity-0" @load="onLoad" ref="imgRef" />
   </div>
 </template>
 
