@@ -64,7 +64,7 @@
         </div>
 
         <!-- Botón del Carrito -->
-        <button @click="toggleSidebar" class="relative">
+        <button @click.stop="toggleSidebar" class="relative">
           <i class="fa-solid fa-cart-shopping text-2xl"></i>
           <span v-if="cartCount > 0" class="absolute top-0 right-0 text-sm bg-red-500 text-white rounded-full px-2">
             {{ cartCount }}
@@ -108,6 +108,7 @@ export default defineComponent({
 
     const toggleSidebar = () => {
       sidebarOpen.value = !sidebarOpen.value
+      console.log('toggleSidebar =>', sidebarOpen.value) // Para verificar en consola
     }
 
     const toggleDropdown = () => {
@@ -115,20 +116,28 @@ export default defineComponent({
     }
 
     const logout = () => {
+      // Se cierra la sesión y se limpia el carrito (resetear el store)
       authStore.logout()
+      cartStore.$reset()
       dropdownOpen.value = false
       router.push('/')
     }
 
     // Cerrar dropdown si se hace click fuera
     const handleClickOutside = (e: MouseEvent) => {
-      if (dropdownOpen.value && navBarRef.value && !navBarRef.value.contains(e.target as Node)) {
+      if (
+        dropdownOpen.value &&
+        navBarRef.value &&
+        !navBarRef.value.contains(e.target as Node)
+      ) {
         dropdownOpen.value = false
       }
     }
+
     onMounted(() => {
       document.addEventListener('click', handleClickOutside)
     })
+
     onBeforeUnmount(() => {
       document.removeEventListener('click', handleClickOutside)
     })

@@ -94,15 +94,14 @@ export default defineComponent({
     const fallbackImg = 'https://via.placeholder.com/300'
 
     onMounted(async () => {
-      // Ajusta a tus endpoints reales
       try {
-        const res1 = await axios.get(import.meta.env.VITE_BACKEND_URL + '/products/best-sellers')
+        const res1 = await axios.get(import.meta.env.VITE_BACKEND_URL + '/productos/destacados/mas-vendidos')
         bestSellers.value = res1.data
       } catch {
         bestSellers.value = []
       }
       try {
-        const res2 = await axios.get(import.meta.env.VITE_BACKEND_URL + '/products/recent')
+        const res2 = await axios.get(import.meta.env.VITE_BACKEND_URL + '/productos/destacados/recientes')
         recentProducts.value = res2.data
       } catch {
         recentProducts.value = []

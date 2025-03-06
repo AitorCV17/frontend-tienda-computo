@@ -1,14 +1,26 @@
 <template>
   <div class="max-w-5xl mx-auto p-6" v-if="product">
     <div class="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
-      <LazyImage :src="product.imagen || fallbackImg" :alt="product.nombre" class="w-full md:w-1/2 h-80 object-cover rounded" />
+      <LazyImage
+        :src="product.imagen || fallbackImg"
+        :alt="product.nombre"
+        class="w-full md:w-1/2 h-80 object-cover rounded"
+      />
       <div class="md:w-1/2">
         <h2 class="text-3xl font-bold mb-4">{{ product.nombre }}</h2>
-        <p class="text-gray-600 dark:text-gray-300 mb-4">{{ product.descripcion || 'Sin descripción' }}</p>
+        <p class="text-gray-600 dark:text-gray-300 mb-4">
+          {{ product.descripcion || 'Sin descripción' }}
+        </p>
         <p class="text-2xl font-bold mb-4">S/ {{ product.precio }}</p>
         <div class="flex items-center space-x-2 mb-4">
           <label for="qtyDetail" class="text-sm text-gray-600 dark:text-gray-300">Cantidad:</label>
-          <input id="qtyDetail" type="number" min="1" class="w-16 border rounded px-2 dark:bg-gray-700 dark:text-gray-200" v-model.number="quantity" />
+          <input
+            id="qtyDetail"
+            type="number"
+            min="1"
+            class="w-16 border rounded px-2 dark:bg-gray-700 dark:text-gray-200"
+            v-model.number="quantity"
+          />
         </div>
         <button class="btn-primary hover:scale-105 transform" @click="addToCart">
           <i class="fa-solid fa-cart-plus mr-2"></i>
@@ -46,13 +58,18 @@ export default defineComponent({
       if (!productsStore.products.length) {
         await productsStore.fetchProducts()
       }
-      product.value = productsStore.products.find((p: any) => p.id === id) || await productsStore.fetchProductById(id)
+      // Buscar en store, si no está, pedir al backend
+      product.value =
+        productsStore.products.find((p: any) => p.id === id) ||
+        (await productsStore.fetchProductById(id))
       loading.value = false
     })
 
     const addToCart = () => {
       if (!product.value) return
-      cartStore.addItemBackend(product.value.id, quantity.value)
+      // Asegurar mínimo 1
+      const qty = quantity.value > 0 ? quantity.value : 1
+      cartStore.addItemBackend(product.value.id, qty)
     }
 
     return {
@@ -65,3 +82,7 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped>
+/* Ajustes o estilos particulares */
+</style>

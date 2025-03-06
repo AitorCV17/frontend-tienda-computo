@@ -7,6 +7,7 @@ export interface CarritoItem {
   producto: {
     nombre: string
     precio: number
+    imagen?: string
   }
   cantidad: number
 }
@@ -19,12 +20,18 @@ export const useCartStore = defineStore('cart', {
     async addItemBackend(productId: number, cantidad: number): Promise<void> {
       const authStore = useAuthStore()
       if (!authStore.token) throw new Error('No token, usuario no autenticado')
+
+      // Asegúrate de enviar "productoId" en lugar de "productId":
       await axios.post(
         import.meta.env.VITE_BACKEND_URL + '/carrito',
         { productoId: productId, cantidad },
         { headers: { Authorization: `Bearer ${authStore.token}` } }
       )
+
+      // Luego recargas el carrito
+      await this.fetchBackendCart()
     },
+
     async fetchBackendCart(): Promise<void> {
       const authStore = useAuthStore()
       if (!authStore.token) return

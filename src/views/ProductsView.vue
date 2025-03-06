@@ -10,13 +10,16 @@
       <div
         v-for="product in productsStore.products"
         :key="product.id"
-        class="product-card"
+        class="product-card border rounded p-4 bg-white dark:bg-gray-700 shadow hover:shadow-lg transition"
       >
         <!-- Imagen del producto -->
         <LazyImage :src="product.imagen || fallbackImg" :alt="product.nombre" class="mb-4 rounded" />
 
         <!-- Nombre del producto -->
-        <router-link :to="{ name: 'ProductDetail', params: { id: product.id } }" class="text-xl font-semibold mb-2 block hover:underline">
+        <router-link
+          :to="{ name: 'ProductDetail', params: { id: product.id } }"
+          class="text-xl font-semibold mb-2 block hover:underline"
+        >
           {{ product.nombre }}
         </router-link>
 
@@ -47,8 +50,8 @@
       </div>
     </div>
 
-    <!-- Popup de éxito al agregar producto -->
-    <AddToCartSuccess v-if="showSuccess" @close="showSuccess = false" :duration="2500" />
+    <!-- Modal de producto agregado -->
+    <AddToCartModal :visible="showAddToCartModal" @update:visible="val => showAddToCartModal = val" />
   </div>
 </template>
 
@@ -60,56 +63,61 @@ import { useAuthStore } from '../store/auth'
 import { useRouter } from 'vue-router'
 import LazyImage from '../components/LazyImage.vue'
 import LoadingSpinner from '../components/LoadingSpinner.vue'
-import AddToCartSuccess from '../components/AddToCartSuccess.vue'
+import AddToCartModal from '../components/AddToCartModal.vue'
 
 export default defineComponent({
   name: 'ProductsView',
-  components: { LazyImage, LoadingSpinner, AddToCartSuccess },
+  components: { LazyImage, LoadingSpinner, AddToCartModal },
   setup() {
     const productsStore = useProductsStore()
     const cartStore = useCartStore()
     const authStore = useAuthStore()
     const router = useRouter()
+
     const loading = ref(true)
     const fallbackImg = 'https://via.placeholder.com/300'
     const quantities = ref<Record<number, number>>({})
-    const showSuccess = ref(false)
+    const showAddToCartModal = ref(false)
 
     onMounted(async () => {
       loading.value = true
       await productsStore.fetchProducts()
-      productsStore.products.forEach((p: any) => {
+      productsStore.products.forEach((p) => {
         quantities.value[p.id] = 1
       })
       loading.value = false
     })
 
     const addToCart = async (product: any) => {
+      // Verifica si está logueado
       if (!authStore.isLoggedIn) {
         router.push('/login')
         return
       }
-      const qty = quantities.value[product.id] || 1
+      // Asegurarse de que qty sea al menos 1
+      const qty = quantities.value[product.id] && quantities.value[product.id] > 0
+        ? quantities.value[product.id]
+        : 1
       try {
         await cartStore.addItemBackend(product.id, qty)
-        showSuccess.value = true
+        // Muestra el modal al agregar
+        showAddToCartModal.value = true
       } catch (error: any) {
         alert(error.message || 'Error al agregar al carrito')
       }
     }
 
     return {
+      productsStore,
+      cartStore,
+      authStore,
+      router,
       loading,
       fallbackImg,
       quantities,
-      productsStore,
-      addToCart,
-      showSuccess
+      showAddToCartModal,
+      addToCart
     }
   }
 })
 </script>
-
-<style scoped>
-/* Puedes personalizar estilos adicionales aquí */
-</style>
