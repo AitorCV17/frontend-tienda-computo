@@ -1,9 +1,22 @@
 <template>
-  <div class="relative overflow-hidden">
-    <div v-if="!loaded" class="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-700">
+  <div class="relative overflow-hidden" ref="wrapperRef">
+    <!-- Spinner encima (sólo se ve mientras no se ha “activado” la imagen) -->
+    <div
+      v-if="!loaded"
+      class="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-700"
+    >
       <LoadingSpinner />
     </div>
-    <img v-if="loaded" :src="src" :alt="alt" class="transition-opacity duration-700 opacity-0" @load="onLoad" ref="imgRef" />
+
+    <!-- Usamos v-show en lugar de v-if, para que el <img> exista en el DOM y sea observado -->
+    <img
+      v-show="loaded"
+      :src="src"
+      :alt="alt"
+      class="transition-opacity duration-700 opacity-0"
+      @load="onLoad"
+      ref="imgRef"
+    />
   </div>
 </template>
 
@@ -21,24 +34,27 @@ export default defineComponent({
   },
   setup(props) {
     const loaded = ref(false)
-    const imgRef = ref<HTMLImageElement | null>(null)
+    // Referencia al contenedor para observarlo con IntersectionObserver
+    const wrapperRef = ref<HTMLDivElement | null>(null)
 
+    // Cuando el contenedor entre en el viewport, “activamos” la imagen
     const { stop } = useIntersectionObserver(
-      imgRef,
+      wrapperRef,
       ([{ isIntersecting }]) => {
         if (isIntersecting) {
           loaded.value = true
-          stop()
+          stop() // dejamos de observar
         }
       }
     )
 
+    // Una vez que la imagen se descarga, le quitamos la opacidad 0 para que aparezca
     const onLoad = (event: Event) => {
       const target = event.target as HTMLImageElement
       target.style.opacity = '1'
     }
 
-    return { loaded, imgRef, onLoad }
+    return { loaded, wrapperRef, onLoad }
   }
 })
 </script>

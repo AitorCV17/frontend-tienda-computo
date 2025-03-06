@@ -6,7 +6,7 @@
     <div class="max-w-7xl mx-auto flex items-center justify-between">
       <!-- Logo y Marca -->
       <div class="flex items-center space-x-2">
-        <img src="../assets/hero.jpg" alt="Logo" class="h-10 w-10 rounded-full object-cover" />
+        <img src="../assets/hero.png" alt="Logo" class="h-10 w-10 rounded-full object-cover" />
         <span class="text-xl font-bold">Tienda Computación</span>
       </div>
 

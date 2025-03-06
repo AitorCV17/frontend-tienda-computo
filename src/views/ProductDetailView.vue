@@ -5,7 +5,7 @@
     >
       <!-- Imagen del producto -->
       <LazyImage
-        :src="getImageUrl(product.imagen)"
+        :src="product.imagen || 'https://via.placeholder.com/300?text=Sin+Imagen'"
         :alt="product.nombre"
         class="w-full md:w-1/2 h-80 object-cover rounded shadow hover:scale-105 transition-transform"
       />
@@ -75,14 +75,6 @@ export default defineComponent({
       loading.value = false
     })
 
-    // Función para construir la URL de la imagen
-    const getImageUrl = (img: string | undefined) => {
-      if (!img) {
-        return 'https://via.placeholder.com/300?text=Sin+Imagen'
-      }
-      return import.meta.env.VITE_BACKEND_URL + '/storage/' + img
-    }
-
     const addToCart = () => {
       if (!product.value) return
       const qty = quantity.value > 0 ? quantity.value : 1
@@ -93,8 +85,7 @@ export default defineComponent({
       product,
       quantity,
       loading,
-      addToCart,
-      getImageUrl
+      addToCart
     }
   }
 })

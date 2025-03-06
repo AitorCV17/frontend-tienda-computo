@@ -15,9 +15,9 @@
         :key="product.id"
         class="product-card border rounded p-4 bg-white dark:bg-gray-700 shadow hover:shadow-xl transition transform hover:-translate-y-1"
       >
-        <!-- Imagen del producto (usando getImageUrl) -->
+        <!-- Imagen del producto (usando la URL completa que ya viene en product.imagen) -->
         <LazyImage
-          :src="getImageUrl(product.imagen)"
+          :src="product.imagen || 'https://via.placeholder.com/300?text=Sin+Imagen'"
           :alt="product.nombre"
           class="mb-4 rounded"
         />
@@ -100,16 +100,6 @@ export default defineComponent({
       loading.value = false
     })
 
-    // Construye la URL de la imagen (o usa fallback) según tu backend
-    const getImageUrl = (img: string | undefined) => {
-      if (!img) {
-        return 'https://via.placeholder.com/300?text=Sin+Imagen'
-      }
-      // Ajusta la concatenación si tu backend sirve imágenes en otra ruta
-      // Por ejemplo: VITE_BACKEND_URL + '/storage/' + img
-      return import.meta.env.VITE_BACKEND_URL + '/storage/' + img
-    }
-
     const addToCart = async (product: any) => {
       if (!authStore.isLoggedIn) {
         router.push('/login')
@@ -134,8 +124,7 @@ export default defineComponent({
       loading,
       quantities,
       showAddToCartModal,
-      addToCart,
-      getImageUrl
+      addToCart
     }
   }
 })
