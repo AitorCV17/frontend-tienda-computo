@@ -1,29 +1,25 @@
 // tailwind.config.js
-/** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: 'class',
   content: [
     './index.html',
-    './src/**/*.{vue,ts,js,jsx,tsx}'
+    './src/**/*.{vue,ts,js,jsx,tsx}',
   ],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['Montserrat', 'ui-sans-serif', 'system-ui', 'sans-serif']
-      },
       colors: {
-        'curious-blue': {
-          50:  '#f0faff',
-          100: '#e1f3fd',
-          200: '#bce8fb',
-          300: '#81d7f8',
-          400: '#3ec2f2',
-          500: '#15aae2',
-          600: '#0993ce',
-          700: '#086e9c',
-          800: '#0b5d81',
-          900: '#0f4d6b',
-          950: '#0a3147'
+        'science-blue': {
+          '50': '#f2f7fd',
+          '100': '#e5edf9',
+          '200': '#c4dbf3',
+          '300': '#90bce9',
+          '400': '#559adb',
+          '500': '#2f7dc8',  // <--- Importante
+          '600': '#236bb8',
+          '700': '#1b4f89',
+          '800': '#1a4372',
+          '900': '#1b3a5f',
+          '950': '#12253f'
         }
       },
       keyframes: {

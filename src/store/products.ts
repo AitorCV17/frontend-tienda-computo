@@ -24,7 +24,7 @@ export const useProductsStore = defineStore('products', {
     },
     async fetchProductById(id: number): Promise<Producto | undefined> {
       try {
-        const { data } = await axios.get<Producto>(import.meta.env.VITE_BACKEND_URL + `/productos/${id}`)
+        const { data } = await axios.get<Producto>(`${import.meta.env.VITE_BACKEND_URL}/productos/${id}`)
         return data
       } catch (error) {
         console.error('Error fetching product by id:', error)

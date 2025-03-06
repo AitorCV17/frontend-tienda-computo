@@ -21,14 +21,12 @@ export const useCartStore = defineStore('cart', {
       const authStore = useAuthStore()
       if (!authStore.token) throw new Error('No token, usuario no autenticado')
 
-      // Asegúrate de enviar "productoId" en lugar de "productId":
       await axios.post(
         import.meta.env.VITE_BACKEND_URL + '/carrito',
         { productoId: productId, cantidad },
         { headers: { Authorization: `Bearer ${authStore.token}` } }
       )
 
-      // Luego recargas el carrito
       await this.fetchBackendCart()
     },
 

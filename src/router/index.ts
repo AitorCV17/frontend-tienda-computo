@@ -6,8 +6,8 @@ import CartView from '../views/CartView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import GoogleCallbackView from '../views/GoogleCallbackView.vue'
-import Profile from '../views/ProfileView.vue';
-
+import ProfileView from '../views/ProfileView.vue';
+import CheckoutView from '../views/CheckoutView.vue';
 
 const routes = [
   { path: '/', name: 'Home', component: HomeView },
@@ -17,7 +17,8 @@ const routes = [
   { path: '/login', name: 'Login', component: LoginView },
   { path: '/register', name: 'Register', component: RegisterView },
   { path: '/auth/google/callback', name: 'GoogleCallback', component: GoogleCallbackView },
-  { path: '/profile', name: 'Profile', component: Profile }
+  { path: '/profile', name: 'Profile', component: ProfileView },
+  { path: '/checkout', name: 'Checkout', component: CheckoutView }
 ]
 
 export default createRouter({

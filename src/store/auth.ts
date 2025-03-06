@@ -4,7 +4,7 @@ import { useStorage } from '@vueuse/core' // Para asegurar compatibilidad con Vu
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    token: useStorage('auth', null) as unknown as string | null // Usa useStorage para sincronización reactiva con localStorage
+    token: useStorage('auth', null) as unknown as string | null
   }),
   getters: {
     isLoggedIn: (state) => !!state.token
@@ -17,5 +17,5 @@ export const useAuthStore = defineStore('auth', {
       this.token = null
     }
   },
-  persist: true // Esto activa la persistencia correctamente con pinia-plugin-persistedstate
+  persist: true
 })

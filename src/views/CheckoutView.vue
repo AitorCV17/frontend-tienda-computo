@@ -9,7 +9,7 @@
         v-model="shippingAddress"
         type="text"
         placeholder="Ingresa tu dirección"
-        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2"
+        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-science-blue-500 dark:bg-gray-700 dark:text-gray-200"
       />
     </div>
 
@@ -51,7 +51,7 @@
       <div v-for="item in cartStore.backendCart" :key="item.id" class="flex items-center justify-between mb-2">
         <div>
           <p class="font-semibold">{{ item.producto.nombre }}</p>
-          <p class="text-sm text-gray-500">Cantidad: {{ item.cantidad }}</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Cantidad: {{ item.cantidad }}</p>
         </div>
         <p>S/. {{ (item.producto.precio * item.cantidad).toFixed(2) }}</p>
       </div>
@@ -111,15 +111,12 @@ export default defineComponent({
     const selectedPaymentMethod = ref<number | null>(null)
 
     onMounted(() => {
-      // Verifica que haya productos en el carrito
       if (cartStore.backendCart.length === 0) {
         router.push('/products')
       }
-      // Verifica login
       if (!authStore.isLoggedIn) {
         router.push('/login')
       }
-      // Simulamos traer métodos de envío/pago
       shippingMethods.value = [
         { id: 1, nombre: 'Envío Regular (2-5 días)', costo: 10 },
         { id: 2, nombre: 'Envío Express (1-2 días)', costo: 20 }
@@ -172,7 +169,6 @@ export default defineComponent({
           }
         )
         alert('Compra finalizada con éxito. Orden # ' + response.data.ordenId)
-        // Limpia el carrito, o haz fetch del carrito
         await cartStore.fetchBackendCart()
         router.push('/')
       } catch (error: any) {

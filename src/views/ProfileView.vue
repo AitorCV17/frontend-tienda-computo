@@ -63,7 +63,6 @@ export default defineComponent({
 
     onMounted(async () => {
       try {
-        // Ajustamos la ruta a /auth/profile
         const { data } = await axios.get(
           import.meta.env.VITE_BACKEND_URL + '/auth/profile',
           {
@@ -81,7 +80,6 @@ export default defineComponent({
 
     const updateProfile = async () => {
       try {
-        // Ajustamos la ruta a /auth/profile
         await axios.put(
           import.meta.env.VITE_BACKEND_URL + '/auth/profile',
           {
@@ -96,7 +94,7 @@ export default defineComponent({
         notificationMessage.value = 'Perfil actualizado correctamente'
         notificationType.value = 'success'
         notificationIcon.value = 'fa-solid fa-check'
-        password.value = '' // Limpia password
+        password.value = ''
       } catch (error: any) {
         notificationMessage.value =
           error.response?.data?.message || 'Error al actualizar perfil'

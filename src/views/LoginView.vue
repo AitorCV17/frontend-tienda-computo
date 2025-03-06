@@ -15,7 +15,7 @@
           v-model="email"
           type="email"
           placeholder="Ingresa tu correo"
-          class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-curious-blue-500 dark:bg-gray-700 dark:text-gray-200"
+          class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-science-blue-500 dark:bg-gray-700 dark:text-gray-200"
         />
         <p v-if="emailError" class="text-red-500 text-sm mt-1">
           {{ emailError }}
@@ -30,7 +30,7 @@
           v-model="password"
           type="password"
           placeholder="Ingresa tu contraseña"
-          class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-curious-blue-500 dark:bg-gray-700 dark:text-gray-200"
+          class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-science-blue-500 dark:bg-gray-700 dark:text-gray-200"
         />
         <p v-if="passwordError" class="text-red-500 text-sm mt-1">
           {{ passwordError }}
@@ -62,7 +62,7 @@
         ¿No tienes cuenta?
         <router-link
           to="/register"
-          class="text-curious-blue-600 dark:text-curious-blue-400 hover:underline"
+          class="text-science-blue-600 dark:text-science-blue-400 hover:underline"
         >
           Crear una cuenta
         </router-link>
@@ -96,7 +96,6 @@ export default defineComponent({
     const router = useRouter()
     const authStore = useAuthStore()
 
-    // Validaciones básicas
     const emailError = computed(() =>
       email.value.trim() === '' ? 'El correo es requerido.' : ''
     )
@@ -109,7 +108,6 @@ export default defineComponent({
     const notificationType = ref('')
     const notificationIcon = ref('')
 
-    // Login normal (correo/contraseña)
     const handleLogin = async () => {
       if (!isFormValid.value) return
       try {
@@ -129,7 +127,6 @@ export default defineComponent({
       }
     }
 
-    // Login con Google
     const loginWithGoogle = () => {
       window.location.href = import.meta.env.VITE_BACKEND_URL + '/auth/google'
     }

@@ -6,14 +6,21 @@
     <LoadingSpinner v-if="loading" />
 
     <!-- Grid de productos -->
-    <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div
+      v-else
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 animate-fade-in-down"
+    >
       <div
         v-for="product in productsStore.products"
         :key="product.id"
-        class="product-card border rounded p-4 bg-white dark:bg-gray-700 shadow hover:shadow-lg transition"
+        class="product-card border rounded p-4 bg-white dark:bg-gray-700 shadow hover:shadow-xl transition transform hover:-translate-y-1"
       >
-        <!-- Imagen del producto -->
-        <LazyImage :src="product.imagen || fallbackImg" :alt="product.nombre" class="mb-4 rounded" />
+        <!-- Imagen del producto (usando getImageUrl) -->
+        <LazyImage
+          :src="getImageUrl(product.imagen)"
+          :alt="product.nombre"
+          class="mb-4 rounded"
+        />
 
         <!-- Nombre del producto -->
         <router-link
@@ -43,7 +50,10 @@
         </div>
 
         <!-- Botón para agregar al carrito -->
-        <button class="btn-primary hover:scale-105 transform w-full" @click="addToCart(product)">
+        <button
+          class="btn-primary hover:scale-105 transform w-full"
+          @click="addToCart(product)"
+        >
           <i class="fa-solid fa-cart-plus mr-2"></i>
           Agregar
         </button>
@@ -51,7 +61,10 @@
     </div>
 
     <!-- Modal de producto agregado -->
-    <AddToCartModal :visible="showAddToCartModal" @update:visible="val => showAddToCartModal = val" />
+    <AddToCartModal
+      :visible="showAddToCartModal"
+      @update:visible="val => showAddToCartModal = val"
+    />
   </div>
 </template>
 
@@ -75,7 +88,6 @@ export default defineComponent({
     const router = useRouter()
 
     const loading = ref(true)
-    const fallbackImg = 'https://via.placeholder.com/300'
     const quantities = ref<Record<number, number>>({})
     const showAddToCartModal = ref(false)
 
@@ -88,19 +100,26 @@ export default defineComponent({
       loading.value = false
     })
 
+    // Construye la URL de la imagen (o usa fallback) según tu backend
+    const getImageUrl = (img: string | undefined) => {
+      if (!img) {
+        return 'https://via.placeholder.com/300?text=Sin+Imagen'
+      }
+      // Ajusta la concatenación si tu backend sirve imágenes en otra ruta
+      // Por ejemplo: VITE_BACKEND_URL + '/storage/' + img
+      return import.meta.env.VITE_BACKEND_URL + '/storage/' + img
+    }
+
     const addToCart = async (product: any) => {
-      // Verifica si está logueado
       if (!authStore.isLoggedIn) {
         router.push('/login')
         return
       }
-      // Asegurarse de que qty sea al menos 1
       const qty = quantities.value[product.id] && quantities.value[product.id] > 0
         ? quantities.value[product.id]
         : 1
       try {
         await cartStore.addItemBackend(product.id, qty)
-        // Muestra el modal al agregar
         showAddToCartModal.value = true
       } catch (error: any) {
         alert(error.message || 'Error al agregar al carrito')
@@ -113,10 +132,10 @@ export default defineComponent({
       authStore,
       router,
       loading,
-      fallbackImg,
       quantities,
       showAddToCartModal,
-      addToCart
+      addToCart,
+      getImageUrl
     }
   }
 })

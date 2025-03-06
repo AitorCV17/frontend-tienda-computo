@@ -4,18 +4,18 @@
 
 /* Botón primario */
 .btn-primary {
-  @apply bg-curious-blue-500 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out;
+  @apply bg-science-blue-500 text-white font-bold py-2 px-4 rounded-md shadow hover:shadow-lg transition duration-300 ease-in-out;
 }
 .btn-primary:hover {
-  @apply bg-curious-blue-600;
+  @apply bg-science-blue-600;
 }
 
 /* Botón secundario */
 .btn-secondary {
-  @apply bg-white text-curious-blue-600 font-bold py-2 px-4 rounded border border-curious-blue-600 transition duration-300 ease-in-out;
+  @apply bg-white text-science-blue-600 font-bold py-2 px-4 rounded-md border border-science-blue-600 transition duration-300 ease-in-out;
 }
 .btn-secondary:hover {
-  @apply bg-curious-blue-50;
+  @apply bg-science-blue-50;
 }
 
 /* Ajustes globales para dark mode */
@@ -25,7 +25,7 @@
 .dark body {
   background-color: #0f172a !important;
 }
-.dark .bg-curious-blue-50 {
+.dark .bg-science-blue-50 {
   background-color: #0f172a !important;
 }
 .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6, .dark p, .dark span, .dark a {
@@ -33,6 +33,6 @@
 }
 
 /* Hero principal */
-section.bg-gradient-to-r.from-blue-600.to-blue-800 {
-  background: linear-gradient(to right, #1e3a8a, #1d4ed8) !important;
+section.bg-gradient-to-r.from-science-blue-600.to-science-blue-800 {
+  background: linear-gradient(to right, #2f7dc8, #1b4f89) !important;
 }

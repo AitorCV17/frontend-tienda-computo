@@ -1,4 +1,4 @@
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import { useElementBounding } from '@vueuse/core'
 
 export function useTooltip() {
@@ -14,9 +14,6 @@ export function useTooltip() {
   const hideTooltip = () => {
     visible.value = false
   }
-
-  // Ejemplo: Podrías posicionar un tooltip usando left, top, etc.
-  // o manipular el DOM con un portal.
 
   return {
     tooltipText,

@@ -1,7 +1,7 @@
 <template>
   <nav
     ref="navBarRef"
-    class="bg-gradient-to-r from-curious-blue-500 via-curious-blue-600 to-curious-blue-700 text-white shadow p-4 dark:bg-gray-800 transition-colors duration-300"
+    class="bg-gradient-to-r from-science-blue-500 via-science-blue-600 to-science-blue-700 text-white shadow p-4 dark:bg-gray-800 transition-colors duration-300"
   >
     <div class="max-w-7xl mx-auto flex items-center justify-between">
       <!-- Logo y Marca -->
